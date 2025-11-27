@@ -6,31 +6,33 @@ import javafx.scene.layout.*
 import javafx.geometry.Insets
 import javafx.collections.FXCollections
 import java.util.UUID
+import persistence.JsonDataPersistence
 
 class VenueManagementView(private val eventManager: EventManager) {
+    private lateinit var venueListView: ListView<String>  // <- DECLARE
 
-    fun createView(): BorderPane {
+    public fun createView(): BorderPane {
         val root = BorderPane()
         root.padding = Insets(20.0)
 
-        // Form for adding venues
         val form = createVenueForm()
 
-        // List of venues
-        val venueListView = ListView<String>()
-        updateVenueList(venueListView)
+        venueListView = ListView<String>()
+        updateVenueList()      // <- NOW WORKS (line 76)
 
         root.left = form
         root.center = VBox(10.0).apply {
             padding = Insets(0.0, 0.0, 0.0, 20.0)
             children.addAll(
-                Label("Existing Venues").apply { style = "-fx-font-size: 18px; -fx-font-weight: bold;" },
+                Label("Existing Venues").apply {
+                    style = "-fx-font-size: 18px; -fx-font-weight: bold;"
+                },
                 venueListView
             )
         }
-
         return root
     }
+
 
     private fun createVenueForm(): VBox {
         val form = VBox(10.0)
@@ -54,17 +56,25 @@ class VenueManagementView(private val eventManager: EventManager) {
                     location = locationField.text,
                     facilities = facilitiesField.text.split(",").map { it.trim() }
                 )
-
                 eventManager.addVenue(venue)
-                statusLabel.text = "Venue added successfully!"
-                statusLabel.style = "-fx-text-fill: green;"
+
+                // Save to JSON persistence
+                val persistence = JsonDataPersistence("data")  // Adjust path as needed
+                val result = persistence.saveVenues(eventManager.getAllVenues())
+                if (result.isSuccess) {
+                    statusLabel.text = "Venue added and saved successfully!"
+                    statusLabel.style = "-fx-text-fill: green;"
+                } else {
+                    statusLabel.text = "Venue added but save failed: ${result.exceptionOrNull()?.message}"
+                    statusLabel.style = "-fx-text-fill: orange;"
+                }
 
                 // Clear fields
                 nameField.clear()
                 capacityField.clear()
                 locationField.clear()
                 facilitiesField.clear()
-
+                updateVenueList()  // Refresh list
             } catch (e: Exception) {
                 statusLabel.text = "Error: ${e.message}"
                 statusLabel.style = "-fx-text-fill: red;"
@@ -84,11 +94,9 @@ class VenueManagementView(private val eventManager: EventManager) {
         return form
     }
 
-    private fun updateVenueList(listView: ListView<String>) {
+    private fun updateVenueList() {
         val venues = eventManager.getAllVenues()
-        val venueStrings = venues.map {
-            "${it.name} - Capacity: ${it.capacity} - ${it.location}"
-        }
-        listView.items = FXCollections.observableArrayList(venueStrings)
+        val venueStrings = venues.map { "${it.name} - Capacity ${it.capacity} - ${it.location}" }
+        venueListView.items = FXCollections.observableArrayList(venueStrings)
     }
 }

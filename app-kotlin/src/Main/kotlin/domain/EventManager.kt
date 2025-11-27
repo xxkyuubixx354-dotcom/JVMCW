@@ -14,15 +14,16 @@ class EventManager {
     }
 
     // Event Management
-    fun createEvent(event: Event): Result<Event> {
-        return if (event.venue.isAvailable(event.startDateTime, event.endDateTime)) {
-            event.venue.bookSlot(event.startDateTime, event.endDateTime)
+    fun createEvent(event: Event): Result<Unit> {
+        return try {
             events.add(event)
-            Result.success(event)
-        } else {
-            Result.failure(Exception("Venue not available for selected time"))
+            // Persist to JSON via existing persistence helper
+            saveData()
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
+
 
     fun getAllEvents(): List<Event> = events.toList()
 

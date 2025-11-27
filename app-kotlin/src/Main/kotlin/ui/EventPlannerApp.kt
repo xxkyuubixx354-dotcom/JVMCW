@@ -9,21 +9,28 @@ import javafx.stage.Stage
 import javafx.geometry.Insets
 
 class EventPlannerApp : Application() {
-    private val eventManager = EventManager()
+    val eventManager = EventManager()
+
+    val participantRegistrationView = ParticipantRegistrationView(eventManager)
+
+    val eventCreationView = EventCreationView(eventManager) {
+        participantRegistrationView.refreshEvents()
+    }
+
+    val venueManagementView = VenueManagementView(eventManager)
 
     override fun start(primaryStage: Stage) {
         primaryStage.title = "Event Planning Manager"
 
         val tabPane = TabPane()
 
-        // Create tabs
-        val venueTab = Tab("Venues", VenueManagementView(eventManager).createView())
-        val eventTab = Tab("Events", EventCreationView(eventManager).createView())
-        val participantTab = Tab("Participants", ParticipantRegistrationView(eventManager).createView())
+        val venueTab = Tab("Venues", venueManagementView.createView())
+        val eventTab = Tab("Events", eventCreationView.createView())
+        val participantTab = Tab("Participants", participantRegistrationView.createView())
         val schedulerTab = Tab("Scheduler", SchedulerView(eventManager).createView())
         schedulerTab.isClosable = false
-        tabPane.tabs.add(schedulerTab)
 
+        tabPane.tabs.add(schedulerTab)
 
         venueTab.isClosable = false
         eventTab.isClosable = false
@@ -35,7 +42,6 @@ class EventPlannerApp : Application() {
         primaryStage.scene = scene
         primaryStage.show()
     }
-}
 
 private fun createMenuBar(eventManager: EventManager): MenuBar {
     val menuBar = MenuBar()
@@ -61,6 +67,7 @@ private fun createMenuBar(eventManager: EventManager): MenuBar {
     menuBar.menus.add(fileMenu)
 
     return menuBar
+  }
 }
 
 

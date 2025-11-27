@@ -8,6 +8,9 @@ import javafx.collections.FXCollections
 
 class ParticipantRegistrationView(private val eventManager: EventManager) {
 
+    private lateinit var eventComboBox: ComboBox<Event>
+
+
     fun createView(): BorderPane {
         val root = BorderPane()
         root.padding = Insets(20.0)
@@ -24,7 +27,7 @@ class ParticipantRegistrationView(private val eventManager: EventManager) {
         form.maxWidth = 600.0
 
         // Event selection
-        val eventComboBox = ComboBox<Event>().apply {
+        eventComboBox = ComboBox<Event>().apply {
             items = FXCollections.observableArrayList(eventManager.getAllEvents())
             converter = object : javafx.util.StringConverter<Event>() {
                 override fun toString(event: Event?): String {
@@ -42,6 +45,7 @@ class ParticipantRegistrationView(private val eventManager: EventManager) {
                 capacityLabel.text = "Available Spots: ${selectedEvent.availableSpots} / ${selectedEvent.maxCapacity}"
             }
         }
+
 
         // Participant fields
         val firstNameField = TextField().apply { promptText = "First Name" }
@@ -132,6 +136,10 @@ class ParticipantRegistrationView(private val eventManager: EventManager) {
         )
 
         return form
+    }
+
+    fun refreshEvents() {
+        eventComboBox.items = FXCollections.observableArrayList(eventManager.getAllEvents())
     }
 
     private fun updateParticipantList(listView: ListView<String>, eventId: String) {
