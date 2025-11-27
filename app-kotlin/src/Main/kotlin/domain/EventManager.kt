@@ -1,0 +1,91 @@
+package domain
+
+import java.time.LocalDateTime
+import persistence.JsonDataPersistence
+
+
+class EventManager {
+    private val events: MutableList<Event> = mutableListOf()
+    private val venues: MutableList<Venue> = mutableListOf()
+    private val persistence = JsonDataPersistence()
+
+    init {
+        loadData()
+    }
+
+    // Event Management
+    fun createEvent(event: Event): Result<Unit> {
+        return try {
+            events.add(event)
+            // Persist to JSON via existing persistence helper
+            saveData()
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
+    fun getAllEvents(): List<Event> = events.toList()
+
+    fun getEventById(id: String): Event? = events.find { it.id == id }
+
+    fun deleteEvent(eventId: String): Boolean {
+        return events.removeIf { it.id == eventId }
+    }
+
+    // Venue Management
+    fun addVenue(venue: Venue) {
+        venues.add(venue)
+    }
+
+    fun getAllVenues(): List<Venue> = venues.toList()
+
+    fun getVenueById(id: String): Venue? = venues.find { it.id == id }
+
+    // Participant Management
+    fun registerParticipantToEvent(eventId: String, participant: Participant): RegistrationResult {
+        val event = getEventById(eventId)
+            ?: return RegistrationResult.Failure("Event not found")
+        return event.registerParticipant(participant)
+    }
+
+    fun getEventParticipants(eventId: String): List<Participant> {
+        return getEventById(eventId)?.getParticipants() ?: emptyList()
+    }
+
+    // Search and Filter
+    fun searchEventsByTitle(query: String): List<Event> {
+        return events.filter { it.title.contains(query, ignoreCase = true) }
+    }
+
+    fun getUpcomingEvents(): List<Event> {
+        val now = LocalDateTime.now()
+        return events.filter { it.startDateTime.isAfter(now) }
+            .sortedBy { it.startDateTime }
+    }
+
+    fun saveData(): Result<Unit> {
+        val venueResult = persistence.saveVenues(venues)
+        val eventResult = persistence.saveEvents(events)
+
+        return if (venueResult.isSuccess && eventResult.isSuccess) {
+            Result.success(Unit)
+        } else {
+            Result.failure(Exception("Failed to save data"))
+        }
+    }
+
+    private fun loadData() {
+        persistence.loadVenues().onSuccess { loadedVenues ->
+            venues.clear()
+            venues.addAll(loadedVenues)
+
+        }
+
+        persistence.loadEvents().onSuccess { loadedEvents ->
+            events.clear()
+            events.addAll(loadedEvents)
+
+        }
+    }
+}

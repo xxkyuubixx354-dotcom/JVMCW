@@ -1,0 +1,94 @@
+[
+  {
+    "id": "cb8bfa6d-69b9-4eb5-9708-d6f8b2974635",
+    "title": "Nabir",
+    "description": "sdasdaddasd",
+    "startDateTime": "2025-08-22T08:00",
+    "endDateTime": "2025-08-22T20:00",
+    "venue": {
+      "id": "9b1a9d8a-4928-4a06-adee-54744efb3d08",
+      "name": "Nabir",
+      "capacity": 610,
+      "location": "london",
+      "facilities": [
+        "toilets",
+        "hotels"
+      ],
+      "availableTimeSlots": []
+    },
+    "maxCapacity": 600,
+    "organizer": "Greenwich",
+    "category": "CONFERENCE",
+    "status": "PLANNED",
+    "registeredParticipants": []
+  },
+  {
+    "id": "06777903-a600-45e6-b01d-189e4cf026d8",
+    "title": "lolz",
+    "description": "lolz\t",
+    "startDateTime": "2003-08-20T08:00",
+    "endDateTime": "2003-08-20T20:00",
+    "venue": {
+      "id": "9b1a9d8a-4928-4a06-adee-54744efb3d08",
+      "name": "Nabir",
+      "capacity": 610,
+      "location": "london",
+      "facilities": [
+        "toilets",
+        "hotels"
+      ],
+      "availableTimeSlots": []
+    },
+    "maxCapacity": 9000,
+    "organizer": "greenwich",
+    "category": "CONFERENCE",
+    "status": "PLANNED",
+    "registeredParticipants": []
+  },
+  {
+    "id": "e95e61ae-54f2-4cca-bd6b-75a877a17149",
+    "title": "sigma",
+    "description": "sigma\t",
+    "startDateTime": "2003-08-20T08:00",
+    "endDateTime": "2003-08-20T20:00",
+    "venue": {
+      "id": "9b1a9d8a-4928-4a06-adee-54744efb3d08",
+      "name": "Nabir",
+      "capacity": 610,
+      "location": "london",
+      "facilities": [
+        "toilets",
+        "hotels"
+      ],
+      "availableTimeSlots": []
+    },
+    "maxCapacity": 100,
+    "organizer": "sigma",
+    "category": "CONFERENCE",
+    "status": "PLANNED",
+    "registeredParticipants": []
+  },
+  {
+    "id": "94a419fe-4c40-457e-9af5-c542543c1d92",
+    "title": "sigma",
+    "description": "sigma\t",
+    "startDateTime": "2026-03-20T08:00",
+    "endDateTime": "2026-03-20T12:00",
+    "venue": {
+      "id": "9b1a9d8a-4928-4a06-adee-54744efb3d08",
+      "name": "Nabir",
+      "capacity": 610,
+      "location": "london",
+      "facilities": [
+        "toilets",
+        "hotels"
+      ],
+      "availableTimeSlots": []
+    },
+    "maxCapacity": 200,
+    "organizer": "lonmdon",
+    "category": "CONFERENCE",
+    "status": "PLANNED",
+    "registeredParticipants": []
+  }
+]
