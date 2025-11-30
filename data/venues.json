@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "96540f0a-fc90-4d42-8250-1fbf3428d1f4",
+    "name": "maritime",
+    "capacity": 10000,
+    "location": "greenwihc",
+    "facilities": [
+      ""
+    ],
+    "availableTimeSlots": []
+  }
+]

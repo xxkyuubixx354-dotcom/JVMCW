@@ -6,6 +6,7 @@ import javafx.scene.control.*
 import javafx.scene.layout.*
 import javafx.geometry.Insets
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class SchedulerView(private val eventManager: EventManager) {
 
@@ -31,18 +32,27 @@ class SchedulerView(private val eventManager: EventManager) {
                 val result = SchedulerBridge.scheduleEvents(events, venues, startTime)
 
                 val output = buildString {
+                    val displayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
                     appendLine("=== SCHEDULE RESULTS ===\n")
                     appendLine("Scheduled Events (${result.scheduled.size}):")
-                    result.scheduled.forEach { event ->
-                        appendLine("  • ${event.eventId}")
-                        appendLine("    Venue: ${event.venueName}")
-                        appendLine("    Time: ${event.startTime} to ${event.endTime}\n")
+                    result.scheduled.forEach { scheduled ->
+                        val startText = scheduled.startTime.format(displayFormatter)
+                        val endText = scheduled.endTime.format(displayFormatter)
+
+                        val title = eventManager.getEventById(scheduled.eventId)?.title
+                            ?: scheduled.eventId
+
+                        appendLine("  • $title")
+                        appendLine("    Venue: ${scheduled.venueName}")
+                        appendLine("    Dates: $startText to $endText\n")
                     }
 
                     if (result.unscheduled.isNotEmpty()) {
                         appendLine("\nUnscheduled Events (${result.unscheduled.size}):")
                         result.unscheduled.forEach { eventId ->
-                            appendLine("  • $eventId")
+                            val title = eventManager.getEventById(eventId)?.title ?: eventId
+                            appendLine("  • $title")
                         }
                     }
                 }

@@ -1,62 +1,37 @@
 [
   {
-    "id": "cb8bfa6d-69b9-4eb5-9708-d6f8b2974635",
-    "title": "Nabir",
-    "description": "sdasdaddasd",
+    "id": "ce1d3b78-b540-47fe-a53f-f700accb0dd2",
+    "title": "malik",
+    "description": "malik\t",
     "startDateTime": "2025-08-22T08:00",
-    "endDateTime": "2025-08-22T20:00",
+    "endDateTime": "2025-08-22T22:00",
     "venue": {
-      "id": "9b1a9d8a-4928-4a06-adee-54744efb3d08",
-      "name": "Nabir",
-      "capacity": 610,
-      "location": "london",
+      "id": "96540f0a-fc90-4d42-8250-1fbf3428d1f4",
+      "name": "maritime",
+      "capacity": 10000,
+      "location": "greenwihc",
       "facilities": [
-        "toilets",
-        "hotels"
+        ""
       ],
       "availableTimeSlots": []
     },
-    "maxCapacity": 600,
-    "organizer": "Greenwich",
-    "category": "CONFERENCE",
+    "maxCapacity": 6767,
+    "organizer": "john",
+    "category": "FESTIVAL",
     "status": "PLANNED",
     "registeredParticipants": [
       {
-        "id": "696bb5e1-d9b1-49b6-a6d7-7ece1c94ae37",
-        "firstName": "Nabir",
-        "lastName": "Malik",
+        "id": "5a09cadb-39f4-4c83-a807-8287bd905671",
+        "firstName": "nabir",
+        "lastName": "malik",
         "email": "n.malik2003@hotmail.co.uk",
-        "phoneNumber": "0786118036",
-        "organization": "greernmwioj",
+        "phoneNumber": "0785510151",
+        "organization": "1501",
         "dietaryRestrictions": [
-          ";",
-          "da"
+          "521501"
         ],
-        "accessibilityNeeds": "mnainroas\u0027l"
+        "accessibilityNeeds": ""
       }
     ]
-  },
-  {
-    "id": "06777903-a600-45e6-b01d-189e4cf026d8",
-    "title": "lolz",
-    "description": "lolz\t",
-    "startDateTime": "2003-08-20T08:00",
-    "endDateTime": "2003-08-20T20:00",
-    "venue": {
-      "id": "9b1a9d8a-4928-4a06-adee-54744efb3d08",
-      "name": "Nabir",
-      "capacity": 610,
-      "location": "london",
-      "facilities": [
-        "toilets",
-        "hotels"
-      ],
-      "availableTimeSlots": []
-    },
-    "maxCapacity": 9000,
-    "organizer": "greenwich",
-    "category": "CONFERENCE",
-    "status": "PLANNED",
-    "registeredParticipants": []
   }
 ]

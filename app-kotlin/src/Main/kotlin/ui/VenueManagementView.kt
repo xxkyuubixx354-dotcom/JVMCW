@@ -122,9 +122,9 @@ class VenueManagementView(private val eventManager: EventManager) {
     private fun updateVenueList() {
         val venues = eventManager.getAllVenues()
         val venueStrings = venues.map { venue ->
-            val spacesLeft = eventManager.getAvailableSpacesForVenue(venue.id)
-            "${venue.name} - $spacesLeft spaces left"
+            "${venue.name} - Capacity: ${venue.capacity}"
         }
         venueListView.items = FXCollections.observableArrayList(venueStrings)
     }
+
 }

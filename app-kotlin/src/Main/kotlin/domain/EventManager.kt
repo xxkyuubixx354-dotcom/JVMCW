@@ -42,9 +42,16 @@ class EventManager {
     }
 
     fun getAvailableSpacesForVenue(venueId: String): Int {
+        val venue = venues.find { it.id == venueId } ?: return 0
         val venueEvents = events.filter { it.venue.id == venueId }
+
+        // If there are no events, show full capacity
+        if (venueEvents.isEmpty()) return venue.capacity
+
+        // Otherwise sum available spots across its events
         return venueEvents.sumOf { it.availableSpots }
     }
+
 
     fun getAllEvents(): List<Event> = events.toList()
 
