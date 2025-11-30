@@ -9,18 +9,45 @@ import java.util.UUID
 import persistence.JsonDataPersistence
 
 class VenueManagementView(private val eventManager: EventManager) {
-    private lateinit var venueListView: ListView<String>  // <- DECLARE
 
-    public fun createView(): BorderPane {
+    private lateinit var venueListView: ListView<String>
+
+    fun createView(): BorderPane {
         val root = BorderPane()
         root.padding = Insets(20.0)
 
         val form = createVenueForm()
 
-        venueListView = ListView<String>()
-        updateVenueList()      // <- NOW WORKS (line 76)
+        venueListView = ListView()
+        updateVenueList()
 
-        root.left = form
+        // Context menu for deleting a venue
+        val contextMenu = ContextMenu()
+        val deleteItem = MenuItem("Delete Venue")
+        contextMenu.items.add(deleteItem)
+        venueListView.contextMenu = contextMenu
+
+        deleteItem.setOnAction {
+            val selectedIndex = venueListView.selectionModel.selectedIndex
+            if (selectedIndex < 0) return@setOnAction
+
+            val venues = eventManager.getAllVenues()
+            val venue = venues.getOrNull(selectedIndex) ?: return@setOnAction
+
+            if (eventManager.removeVenue(venue.id)) {
+                val persistence = JsonDataPersistence("data")
+                persistence.saveVenues(eventManager.getAllVenues())
+                updateVenueList()
+            }
+        }
+
+        val formScroll = ScrollPane(form).apply {
+            isFitToWidth = true
+            hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER
+            vbarPolicy = ScrollPane.ScrollBarPolicy.AS_NEEDED
+        }
+        root.left = formScroll
+
         root.center = VBox(10.0).apply {
             padding = Insets(0.0, 0.0, 0.0, 20.0)
             children.addAll(
@@ -32,7 +59,6 @@ class VenueManagementView(private val eventManager: EventManager) {
         }
         return root
     }
-
 
     private fun createVenueForm(): VBox {
         val form = VBox(10.0)
@@ -58,23 +84,22 @@ class VenueManagementView(private val eventManager: EventManager) {
                 )
                 eventManager.addVenue(venue)
 
-                // Save to JSON persistence
-                val persistence = JsonDataPersistence("data")  // Adjust path as needed
+                val persistence = JsonDataPersistence("data")
                 val result = persistence.saveVenues(eventManager.getAllVenues())
                 if (result.isSuccess) {
                     statusLabel.text = "Venue added and saved successfully!"
                     statusLabel.style = "-fx-text-fill: green;"
                 } else {
-                    statusLabel.text = "Venue added but save failed: ${result.exceptionOrNull()?.message}"
+                    statusLabel.text =
+                        "Venue added but save failed: ${result.exceptionOrNull()?.message}"
                     statusLabel.style = "-fx-text-fill: orange;"
                 }
 
-                // Clear fields
                 nameField.clear()
                 capacityField.clear()
                 locationField.clear()
                 facilitiesField.clear()
-                updateVenueList()  // Refresh list
+                updateVenueList()
             } catch (e: Exception) {
                 statusLabel.text = "Error: ${e.message}"
                 statusLabel.style = "-fx-text-fill: red;"
@@ -96,7 +121,10 @@ class VenueManagementView(private val eventManager: EventManager) {
 
     private fun updateVenueList() {
         val venues = eventManager.getAllVenues()
-        val venueStrings = venues.map { "${it.name} - Capacity ${it.capacity} - ${it.location}" }
+        val venueStrings = venues.map { venue ->
+            val spacesLeft = eventManager.getAvailableSpacesForVenue(venue.id)
+            "${venue.name} - $spacesLeft spaces left"
+        }
         venueListView.items = FXCollections.observableArrayList(venueStrings)
     }
 }

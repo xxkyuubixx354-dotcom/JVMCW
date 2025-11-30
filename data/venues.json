@@ -1,13 +1,1 @@
-[
-  {
-    "id": "9b1a9d8a-4928-4a06-adee-54744efb3d08",
-    "name": "Nabir",
-    "capacity": 610,
-    "location": "london",
-    "facilities": [
-      "toilets",
-      "hotels"
-    ],
-    "availableTimeSlots": []
-  }
-]
+[]

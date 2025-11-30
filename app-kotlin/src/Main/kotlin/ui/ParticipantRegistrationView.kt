@@ -5,18 +5,27 @@ import javafx.scene.control.*
 import javafx.scene.layout.*
 import javafx.geometry.Insets
 import javafx.collections.FXCollections
+import persistence.JsonDataPersistence
+import javafx.scene.control.ScrollPane
+
 
 class ParticipantRegistrationView(private val eventManager: EventManager) {
 
     private lateinit var eventComboBox: ComboBox<Event>
-
+    private val persistence = JsonDataPersistence("data")
 
     fun createView(): BorderPane {
         val root = BorderPane()
         root.padding = Insets(20.0)
 
         val form = createRegistrationForm()
-        root.center = form
+        val scrollPane = ScrollPane(form).apply {
+            isFitToWidth = true     // form stretches horizontally
+            hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER
+            vbarPolicy = ScrollPane.ScrollBarPolicy.AS_NEEDED
+        }
+
+        root.center = scrollPane
 
         return root
     }
@@ -31,7 +40,7 @@ class ParticipantRegistrationView(private val eventManager: EventManager) {
             items = FXCollections.observableArrayList(eventManager.getAllEvents())
             converter = object : javafx.util.StringConverter<Event>() {
                 override fun toString(event: Event?): String {
-                    return event?.let { "${it.title} - ${it.startDateTime}" } ?: ""
+                    return event?.title ?:""
                 }
                 override fun fromString(string: String?): Event? = null
             }
@@ -93,8 +102,17 @@ class ParticipantRegistrationView(private val eventManager: EventManager) {
                             organizationField, dietaryField, accessibilityArea)
 
                         // Update capacity label
-                        capacityLabel.text = "Available Spots: ${selectedEvent.availableSpots} / ${selectedEvent.maxCapacity}"
+                        capacityLabel.text =
+                            "Available Spots: ${selectedEvent.availableSpots} / ${selectedEvent.maxCapacity}"
+
+                        // NEW: persist all events (including updated participants)
+                        val saveResult = persistence.saveEvents(eventManager.getAllEvents())
+                        if (saveResult.isFailure) {
+                            statusLabel.text = "Registered, but failed to save: ${saveResult.exceptionOrNull()?.message}"
+                            statusLabel.style = "-fx-text-fill: orange;"
+                        }
                     }
+
                     is RegistrationResult.Failure -> {
                         statusLabel.text = "Registration failed: ${result.reason}"
                         statusLabel.style = "-fx-text-fill: red;"

@@ -20,7 +20,21 @@
     "organizer": "Greenwich",
     "category": "CONFERENCE",
     "status": "PLANNED",
-    "registeredParticipants": []
+    "registeredParticipants": [
+      {
+        "id": "696bb5e1-d9b1-49b6-a6d7-7ece1c94ae37",
+        "firstName": "Nabir",
+        "lastName": "Malik",
+        "email": "n.malik2003@hotmail.co.uk",
+        "phoneNumber": "0786118036",
+        "organization": "greernmwioj",
+        "dietaryRestrictions": [
+          ";",
+          "da"
+        ],
+        "accessibilityNeeds": "mnainroas\u0027l"
+      }
+    ]
   },
   {
     "id": "06777903-a600-45e6-b01d-189e4cf026d8",
@@ -41,52 +55,6 @@
     },
     "maxCapacity": 9000,
     "organizer": "greenwich",
-    "category": "CONFERENCE",
-    "status": "PLANNED",
-    "registeredParticipants": []
-  },
-  {
-    "id": "e95e61ae-54f2-4cca-bd6b-75a877a17149",
-    "title": "sigma",
-    "description": "sigma\t",
-    "startDateTime": "2003-08-20T08:00",
-    "endDateTime": "2003-08-20T20:00",
-    "venue": {
-      "id": "9b1a9d8a-4928-4a06-adee-54744efb3d08",
-      "name": "Nabir",
-      "capacity": 610,
-      "location": "london",
-      "facilities": [
-        "toilets",
-        "hotels"
-      ],
-      "availableTimeSlots": []
-    },
-    "maxCapacity": 100,
-    "organizer": "sigma",
-    "category": "CONFERENCE",
-    "status": "PLANNED",
-    "registeredParticipants": []
-  },
-  {
-    "id": "94a419fe-4c40-457e-9af5-c542543c1d92",
-    "title": "sigma",
-    "description": "sigma\t",
-    "startDateTime": "2026-03-20T08:00",
-    "endDateTime": "2026-03-20T12:00",
-    "venue": {
-      "id": "9b1a9d8a-4928-4a06-adee-54744efb3d08",
-      "name": "Nabir",
-      "capacity": 610,
-      "location": "london",
-      "facilities": [
-        "toilets",
-        "hotels"
-      ],
-      "availableTimeSlots": []
-    },
-    "maxCapacity": 200,
-    "organizer": "lonmdon",
     "category": "CONFERENCE",
     "status": "PLANNED",
     "registeredParticipants": []

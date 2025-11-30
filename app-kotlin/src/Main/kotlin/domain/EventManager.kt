@@ -3,7 +3,6 @@ package domain
 import java.time.LocalDateTime
 import persistence.JsonDataPersistence
 
-
 class EventManager {
     private val events: MutableList<Event> = mutableListOf()
     private val venues: MutableList<Venue> = mutableListOf()
@@ -15,15 +14,37 @@ class EventManager {
 
     // Event Management
     fun createEvent(event: Event): Result<Unit> {
+        // check venue availability for this time range
+        if (!isVenueAvailable(event.venue.id, event.startDateTime, event.endDateTime)) {
+            return Result.failure(IllegalArgumentException("Venue is not available at this time"))
+        }
+
         return try {
             events.add(event)
-            // Persist to JSON via existing persistence helper
             saveData()
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
+
+    // venue availability for a time range
+    fun isVenueAvailable(
+        venueId: String,
+        start: LocalDateTime,
+        end: LocalDateTime
+    ): Boolean {
+        return events
+            .filter { it.venue.id == venueId }
+            .none { existing ->
+                start < existing.endDateTime && end > existing.startDateTime
+            }
+    }
+
+    fun getAvailableSpacesForVenue(venueId: String): Int {
+        val venueEvents = events.filter { it.venue.id == venueId }
+        return venueEvents.sumOf { it.availableSpots }
+    }
 
     fun getAllEvents(): List<Event> = events.toList()
 
@@ -75,17 +96,22 @@ class EventManager {
         }
     }
 
+    fun removeVenue(venueId: String): Boolean {
+        val venue = venues.find { it.id == venueId } ?: return false
+        return venues.remove(venue)
+    }
+
     private fun loadData() {
         persistence.loadVenues().onSuccess { loadedVenues ->
             venues.clear()
             venues.addAll(loadedVenues)
-
         }
 
         persistence.loadEvents().onSuccess { loadedEvents ->
             events.clear()
             events.addAll(loadedEvents)
-
         }
     }
 }
+
+

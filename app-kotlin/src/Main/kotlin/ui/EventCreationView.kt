@@ -22,10 +22,72 @@ class EventCreationView(
         root.padding = Insets(20.0)
 
         val form = createEventForm()
-        eventListView = ListView<String>()
+        eventListView = ListView()
         updateEventList()
 
-        root.left = form
+        // Context menu for right‑click on events
+        val contextMenu = ContextMenu()
+        val detailsItem = MenuItem("View Details")
+        val deleteItem = MenuItem("Delete Event")
+        contextMenu.items.addAll(detailsItem, deleteItem)
+        eventListView.contextMenu = contextMenu
+
+        detailsItem.setOnAction {
+            val index = eventListView.selectionModel.selectedIndex
+            if (index < 0) return@setOnAction
+
+            val events = eventManager.getAllEvents()
+            val event = events.getOrNull(index) ?: return@setOnAction
+
+            val info = """
+                Title: ${event.title}
+                Description: ${event.description}
+                Category: ${event.category}
+                Venue: ${event.venue.name}
+                Start: ${event.startDateTime}
+                End: ${event.endDateTime}
+                Organizer: ${event.organizer}
+                Capacity: ${event.maxCapacity}
+                Registered: ${event.getParticipants().size}
+            """.trimIndent()
+
+            Alert(Alert.AlertType.INFORMATION).apply {
+                title = "Event Details"
+                headerText = event.title
+                contentText = info
+                showAndWait()
+            }
+        }
+
+        deleteItem.setOnAction {
+            val index = eventListView.selectionModel.selectedIndex
+            if (index < 0) return@setOnAction
+
+            val events = eventManager.getAllEvents()
+            val event = events.getOrNull(index) ?: return@setOnAction
+
+            val confirm = Alert(Alert.AlertType.CONFIRMATION).apply {
+                title = "Delete Event"
+                headerText = "Delete '${event.title}'?"
+                contentText = "This will remove the event and its registrations."
+            }.showAndWait()
+
+            if (confirm.isPresent && confirm.get().buttonData.isDefaultButton) {
+                if (eventManager.deleteEvent(event.id)) {
+                    eventManager.saveData()
+                    updateEventList()
+                    onEventsChanged()
+                }
+            }
+        }
+
+        val formScroll = ScrollPane(form).apply {
+            isFitToWidth = true
+            hbarPolicy = ScrollPane.ScrollBarPolicy.NEVER
+            vbarPolicy = ScrollPane.ScrollBarPolicy.AS_NEEDED
+        }
+
+        root.left = formScroll
         root.center = VBox(10.0).apply {
             padding = Insets(0.0, 0.0, 0.0, 20.0)
             children.addAll(
@@ -110,8 +172,8 @@ class EventCreationView(
                         capacityField
                     )
 
-                    onEventsChanged()   // refresh ParticipantRegistrationView
-                    updateEventList()   // refresh Scheduled Events list
+                    onEventsChanged()
+                    updateEventList()
                 } else {
                     statusLabel.text = "Error: ${result.exceptionOrNull()?.message}"
                     statusLabel.style = "-fx-text-fill: red;"
