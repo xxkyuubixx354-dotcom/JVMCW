@@ -35,7 +35,7 @@ class ParticipantRegistrationView(private val eventManager: EventManager) {
         form.padding = Insets(10.0)
         form.maxWidth = 600.0
 
-        // Event selection
+
         eventComboBox = ComboBox<Event>().apply {
             items = FXCollections.observableArrayList(eventManager.getAllEvents())
             converter = object : javafx.util.StringConverter<Event>() {
@@ -56,7 +56,7 @@ class ParticipantRegistrationView(private val eventManager: EventManager) {
         }
 
 
-        // Participant fields
+        // participant fields
         val firstNameField = TextField().apply { promptText = "First Name" }
         val lastNameField = TextField().apply { promptText = "Last Name" }
         val emailField = TextField().apply { promptText = "Email" }
@@ -71,8 +71,35 @@ class ParticipantRegistrationView(private val eventManager: EventManager) {
         val registerButton = Button("Register Participant")
         val statusLabel = Label()
 
-        // Participant list
         val participantListView = ListView<String>()
+
+       // deleting participants
+        val participantContextMenu = ContextMenu()
+        val deleteParticipantItem = MenuItem("Delete Participant")
+        participantContextMenu.items.add(deleteParticipantItem)
+        participantListView.contextMenu = participantContextMenu
+
+        deleteParticipantItem.setOnAction {
+            val selectedEvent = eventComboBox.value ?: return@setOnAction
+            val index = participantListView.selectionModel.selectedIndex
+            if (index < 0) return@setOnAction
+
+            val confirm = Alert(Alert.AlertType.CONFIRMATION).apply {
+                title = "Delete Participant"
+                headerText = "Remove this participant from ${selectedEvent.title}?"
+                contentText = participantListView.items[index]
+            }.showAndWait()
+
+            if (confirm.isPresent && confirm.get().buttonData.isDefaultButton) {
+                val removed = eventManager.removeParticipantFromEvent(selectedEvent.id, index)
+                if (removed) {
+                    updateParticipantList(participantListView, selectedEvent.id)
+                    capacityLabel.text =
+                        "Available Spots: ${selectedEvent.availableSpots} / ${selectedEvent.maxCapacity}"
+                }
+            }
+        }
+
 
         registerButton.setOnAction {
             try {

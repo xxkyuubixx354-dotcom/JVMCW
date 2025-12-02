@@ -19,17 +19,102 @@
     "organizer": "john",
     "category": "FESTIVAL",
     "status": "PLANNED",
+    "registeredParticipants": []
+  },
+  {
+    "id": "8752c88b-a574-45d3-aeeb-44da4fadbe99",
+    "title": "asda",
+    "description": "asda",
+    "startDateTime": "2026-08-20T00:00",
+    "endDateTime": "2006-08-21T00:00",
+    "venue": {
+      "id": "96540f0a-fc90-4d42-8250-1fbf3428d1f4",
+      "name": "maritime",
+      "capacity": 10000,
+      "location": "greenwihc",
+      "facilities": [
+        ""
+      ],
+      "availableTimeSlots": []
+    },
+    "maxCapacity": 600,
+    "organizer": "lol",
+    "category": "GENERAL",
+    "status": "PLANNED",
+    "registeredParticipants": []
+  },
+  {
+    "id": "5b35895a-cd58-48b4-bd9a-56bb0a61816b",
+    "title": "kohn",
+    "description": "asda",
+    "startDateTime": "2025-08-22T00:00",
+    "endDateTime": "2025-08-22T00:00",
+    "venue": {
+      "id": "96540f0a-fc90-4d42-8250-1fbf3428d1f4",
+      "name": "maritime",
+      "capacity": 10000,
+      "location": "greenwihc",
+      "facilities": [
+        ""
+      ],
+      "availableTimeSlots": []
+    },
+    "maxCapacity": 5151,
+    "organizer": "jon",
+    "category": "GENERAL",
+    "status": "PLANNED",
     "registeredParticipants": [
       {
-        "id": "5a09cadb-39f4-4c83-a807-8287bd905671",
-        "firstName": "nabir",
-        "lastName": "malik",
+        "id": "177adcd1-cba8-41ce-9744-ea9189eb86a5",
+        "firstName": "Nabir",
+        "lastName": "Malik",
         "email": "n.malik2003@hotmail.co.uk",
-        "phoneNumber": "0785510151",
-        "organization": "1501",
-        "dietaryRestrictions": [
-          "521501"
-        ],
+        "phoneNumber": "07861180135",
+        "organization": "bank",
+        "dietaryRestrictions": [],
+        "accessibilityNeeds": "\t"
+      }
+    ]
+  },
+  {
+    "id": "8305a521-d0e0-43dc-8ecd-63aa5a68d7ba",
+    "title": "nabirs party",
+    "description": "Nabirs party!\t",
+    "startDateTime": "2025-12-31T00:00",
+    "endDateTime": "2026-01-01T00:00",
+    "venue": {
+      "id": "8b324cb2-26ae-43f5-9a23-e29f82e0895f",
+      "name": "nabirs house",
+      "capacity": 5,
+      "location": "beckenham",
+      "facilities": [
+        ""
+      ],
+      "availableTimeSlots": []
+    },
+    "maxCapacity": 5,
+    "organizer": "Nabir",
+    "category": "GENERAL",
+    "status": "PLANNED",
+    "registeredParticipants": [
+      {
+        "id": "bac309fe-2d2c-4550-9913-930e1fde3c83",
+        "firstName": "Nabir",
+        "lastName": "Malik",
+        "email": "n.malik2003@hotmail.co.uk",
+        "phoneNumber": "07861180135",
+        "organization": "nabir\u0027s friend",
+        "dietaryRestrictions": [],
+        "accessibilityNeeds": ""
+      },
+      {
+        "id": "ddca1035-fefb-431a-b135-ac13def82911",
+        "firstName": "Myles",
+        "lastName": "Eddu",
+        "email": "myles.eddu@gmail.com",
+        "phoneNumber": "447865862626",
+        "organization": "Nabirs friend",
+        "dietaryRestrictions": [],
         "accessibilityNeeds": ""
       }
     ]

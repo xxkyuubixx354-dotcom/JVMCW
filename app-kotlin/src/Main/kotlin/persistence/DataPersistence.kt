@@ -17,7 +17,6 @@ class JsonDataPersistence(private val dataDirectory: String = "data") {
         File(dataDirectory).mkdirs()
     }
 
-    // Save Events
     fun saveEvents(events: List<Event>): Result<Unit> {
         return try {
             val json = gson.toJson(events)
@@ -28,7 +27,6 @@ class JsonDataPersistence(private val dataDirectory: String = "data") {
         }
     }
 
-    // Load Events
     fun loadEvents(): Result<List<Event>> {
         return try {
             val file = File("$dataDirectory/events.json")
@@ -43,7 +41,6 @@ class JsonDataPersistence(private val dataDirectory: String = "data") {
         }
     }
 
-    // Save Venues
     fun saveVenues(venues: List<Venue>): Result<Unit> {
         return try {
             val json = gson.toJson(venues)
@@ -54,7 +51,6 @@ class JsonDataPersistence(private val dataDirectory: String = "data") {
         }
     }
 
-    // Load Venues
     fun loadVenues(): Result<List<Venue>> {
         return try {
             val file = File("$dataDirectory/venues.json")
@@ -70,7 +66,6 @@ class JsonDataPersistence(private val dataDirectory: String = "data") {
     }
 }
 
-// Custom adapter for LocalDateTime
 class LocalDateTimeAdapter : com.google.gson.JsonSerializer<LocalDateTime>,
     com.google.gson.JsonDeserializer<LocalDateTime> {
 

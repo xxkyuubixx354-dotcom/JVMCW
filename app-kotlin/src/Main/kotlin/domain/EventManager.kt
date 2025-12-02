@@ -12,9 +12,7 @@ class EventManager {
         loadData()
     }
 
-    // Event Management
     fun createEvent(event: Event): Result<Unit> {
-        // check venue availability for this time range
         if (!isVenueAvailable(event.venue.id, event.startDateTime, event.endDateTime)) {
             return Result.failure(IllegalArgumentException("Venue is not available at this time"))
         }
@@ -27,8 +25,6 @@ class EventManager {
         }
     }
 
-
-    // venue availability for a time range
     fun isVenueAvailable(
         venueId: String,
         start: LocalDateTime,
@@ -39,17 +35,6 @@ class EventManager {
             .none { existing ->
                 start < existing.endDateTime && end > existing.startDateTime
             }
-    }
-
-    fun getAvailableSpacesForVenue(venueId: String): Int {
-        val venue = venues.find { it.id == venueId } ?: return 0
-        val venueEvents = events.filter { it.venue.id == venueId }
-
-        // If there are no events, show full capacity
-        if (venueEvents.isEmpty()) return venue.capacity
-
-        // Otherwise sum available spots across its events
-        return venueEvents.sumOf { it.availableSpots }
     }
 
 
@@ -68,7 +53,6 @@ class EventManager {
 
     fun getAllVenues(): List<Venue> = venues.toList()
 
-    fun getVenueById(id: String): Venue? = venues.find { it.id == id }
 
     // Participant Management
     fun registerParticipantToEvent(eventId: String, participant: Participant): RegistrationResult {
@@ -81,16 +65,16 @@ class EventManager {
         return getEventById(eventId)?.getParticipants() ?: emptyList()
     }
 
-    // Search and Filter
-    fun searchEventsByTitle(query: String): List<Event> {
-        return events.filter { it.title.contains(query, ignoreCase = true) }
+    fun removeParticipantFromEvent(eventId: String, participantIndex: Int): Boolean {
+        val event = getEventById(eventId) ?: return false
+        val removed = event.removeParticipantAt(participantIndex)
+        if (removed) {
+            saveData()
+        }
+        return removed
     }
 
-    fun getUpcomingEvents(): List<Event> {
-        val now = LocalDateTime.now()
-        return events.filter { it.startDateTime.isAfter(now) }
-            .sortedBy { it.startDateTime }
-    }
+
 
     fun saveData(): Result<Unit> {
         val venueResult = persistence.saveVenues(venues)
@@ -120,5 +104,3 @@ class EventManager {
         }
     }
 }
-
-

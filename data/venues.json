@@ -8,5 +8,35 @@
       ""
     ],
     "availableTimeSlots": []
+  },
+  {
+    "id": "758e3012-660f-40b0-a195-e59f002f2d06",
+    "name": "sdas",
+    "capacity": 123,
+    "location": "ok",
+    "facilities": [
+      "sa"
+    ],
+    "availableTimeSlots": []
+  },
+  {
+    "id": "f1d0f45a-b4e8-4f66-8db6-4e945b8721a0",
+    "name": "maritime 2",
+    "capacity": 6,
+    "location": "greenwich",
+    "facilities": [
+      ""
+    ],
+    "availableTimeSlots": []
+  },
+  {
+    "id": "8b324cb2-26ae-43f5-9a23-e29f82e0895f",
+    "name": "nabirs house",
+    "capacity": 5,
+    "location": "beckenham",
+    "facilities": [
+      ""
+    ],
+    "availableTimeSlots": []
   }
 ]

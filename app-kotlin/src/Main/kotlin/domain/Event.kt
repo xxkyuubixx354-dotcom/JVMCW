@@ -36,8 +36,11 @@ data class Event(
         }
     }
 
-    fun unregisterParticipant(participantId: String): Boolean {
-        return registeredParticipants.removeIf { it.id == participantId }
+
+    fun removeParticipantAt(index: Int): Boolean {
+        if (index !in registeredParticipants.indices) return false
+        registeredParticipants.removeAt(index)
+        return true
     }
 
     fun getParticipants(): List<Participant> = registeredParticipants.toList()

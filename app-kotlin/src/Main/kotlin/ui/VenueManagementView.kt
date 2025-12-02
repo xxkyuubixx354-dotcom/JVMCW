@@ -21,7 +21,6 @@ class VenueManagementView(private val eventManager: EventManager) {
         venueListView = ListView()
         updateVenueList()
 
-        // Context menu for deleting a venue
         val contextMenu = ContextMenu()
         val deleteItem = MenuItem("Delete Venue")
         contextMenu.items.add(deleteItem)
