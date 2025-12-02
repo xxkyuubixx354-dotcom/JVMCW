@@ -118,5 +118,27 @@
         "accessibilityNeeds": ""
       }
     ]
+  },
+  {
+    "id": "8752c88b-a574-45d3-aeeb-44da4fadbe99",
+    "title": "asda",
+    "description": "asda",
+    "startDateTime": "2026-08-20T00:00",
+    "endDateTime": "2006-08-21T00:00",
+    "venue": {
+      "id": "96540f0a-fc90-4d42-8250-1fbf3428d1f4",
+      "name": "maritime",
+      "capacity": 10000,
+      "location": "greenwihc",
+      "facilities": [
+        ""
+      ],
+      "availableTimeSlots": []
+    },
+    "maxCapacity": 600,
+    "organizer": "lol",
+    "category": "GENERAL",
+    "status": "PLANNED",
+    "registeredParticipants": []
   }
 ]
