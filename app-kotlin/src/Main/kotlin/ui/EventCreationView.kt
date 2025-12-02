@@ -6,6 +6,7 @@ import javafx.scene.control.*
 import javafx.scene.layout.*
 import javafx.geometry.Insets
 import javafx.collections.FXCollections
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -39,9 +40,9 @@ class EventCreationView(
             val events = eventManager.getAllEvents()
             val event = events.getOrNull(index) ?: return@setOnAction
 
-            val displayFormatter = DateTimeFormatter.ofPattern("DD/MM/YYYY")
-            val startText = event.startDateTime.format(displayFormatter)
-            val endText = event.endDateTime.format(displayFormatter)
+            val displayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            val startText = event.startDateTime.toLocalDate().format(displayFormatter)
+            val endText = event.endDateTime.toLocalDate().format(displayFormatter)
 
             val info = """
                 Title: ${event.title}
@@ -119,17 +120,16 @@ class EventCreationView(
         val venueComboBox = ComboBox<Venue>().apply {
             items = FXCollections.observableArrayList(eventManager.getAllVenues())
             converter = object : javafx.util.StringConverter<Venue>() {
-                override fun toString(venue: Venue?): String =
-                    venue?.name ?: ""
+                override fun toString(venue: Venue?): String = venue?.name ?: ""
                 override fun fromString(string: String?): Venue? = null
             }
         }
 
         val startDateField = TextField().apply {
-            promptText = "Start Date (DD/MM/YYYY)"
+            promptText = "Start Date (dd/MM/yyyy)"
         }
         val endDateField = TextField().apply {
-            promptText = "End Date (DD/MM/YYYY)"
+            promptText = "End Date (dd/MM/yyyy)"
         }
 
         val organizerField = TextField().apply { promptText = "Organizer Name" }
@@ -140,15 +140,18 @@ class EventCreationView(
 
         createButton.setOnAction {
             try {
-                val formatter = DateTimeFormatter.ofPattern("DD-MM-YYYY")
+                val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
                 val selectedVenue = venueComboBox.value
                     ?: throw IllegalArgumentException("Please select a venue")
+
+                val startDate = LocalDate.parse(startDateField.text, formatter)
+                val endDate = LocalDate.parse(endDateField.text, formatter)
 
                 val event = Event(
                     title = titleField.text,
                     description = descriptionArea.text,
-                    startDateTime = LocalDateTime.parse(startDateField.text, formatter),
-                    endDateTime = LocalDateTime.parse(endDateField.text, formatter),
+                    startDateTime = startDate.atStartOfDay(),
+                    endDateTime = endDate.atStartOfDay(),
                     venue = selectedVenue,
                     maxCapacity = capacityField.text.toIntOrNull() ?: selectedVenue.capacity,
                     organizer = organizerField.text
@@ -191,8 +194,8 @@ class EventCreationView(
             Label("Title:"), titleField,
             Label("Description:"), descriptionArea,
             Label("Venue:"), venueComboBox,
-            Label("Start Date/Time:"), startDateField,
-            Label("End Date/Time:"), endDateField,
+            Label("Start Date:"), startDateField,
+            Label("End Date:"), endDateField,
             Label("Organizer:"), organizerField,
             Label("Max Capacity:"), capacityField,
             createButton,
